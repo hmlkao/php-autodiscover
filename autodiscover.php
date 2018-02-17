@@ -24,11 +24,11 @@ Example of request from Android E-mail
 // General configuration
 global $config;
 $config['general'] = [
-    'domain'      => 'hmlka.cz',
-    'displayname' => 'Hmlka mail',
-    'login'       => 'username', // [username|email]
-    'logfile'     => '/tmp/autodiscover.log',
-    'debug'       => true, // Save debug messages to logfile
+    'domain'       => 'hmlka.cz',
+    'displayname'  => 'Hmlka mail',
+    'login_format' => 'username', // [username|email]
+    'logfile'      => '/tmp/autodiscover.log',
+    'debug'        => true, // Save debug messages to logfile
 ];
 // SMTP server configuration
 $config['smtp'] = [
@@ -49,8 +49,10 @@ $config['imap'] = [
 
 
 
+
 /******************************** GENERATOR ***********************************/
 logger($_SERVER, 'DEBUG');
+logger($_POST, 'DEBUG');
 
 header("Content-Type: text/xml");
 
@@ -63,12 +65,18 @@ $request = file_get_contents("php://input");
 logger($request);
 
 preg_match("/\<EMailAddress\>(.*?)\<\/EMailAddress\>/", $request, $email);
+if (!empty($email)) {
 $email = $email[1];
-$login = ($_CONFIG['username'] = 'email') ? $email : explode('@', $email)[0];
+logger($email, 'DEBUG');
+$login = ($config['general']['login_format'] == 'email') ? $email : explode('@', $email)[0];
+logger($login, 'DEBUG');
 
 preg_match("/\<AcceptableResponseSchema\>(.*?)\<\/AcceptableResponseSchema\>/", $request, $schema);
 $schema = (isset($schema[1])) ? $schema[1] : false;
+logger($schema, 'DEBUG');
 
+if (strpos($schema, 'mobilesync') === FALSE) {
+logger('Outlook response');
 ?>
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -102,6 +110,33 @@ $schema = (isset($schema[1])) ? $schema[1] : false;
 </Autodiscover>
 
 <?php
+} else {
+logger('Mobilesync response');
+?>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Response xmlns="<?php echo $schema; ?>">
+    <Culture>en:us</Culture>
+    <User>
+        <DisplayName><?php echo $login ?></DisplayName>
+        <EMailAddress><?php echo $email ?></EMailAddress>
+    </User>
+    <Action>
+        <Settings>
+            <Server>
+                <Type>MobileSync</Type>
+                <Url></Url>
+                <Name></Name>
+            </Server>
+        </Settings>
+    </Action>
+</Response>
+
+<?php
+}
+
+
 // Response for Thunderbird
 } elseif ($_SERVER['SERVER_NAME'] == 'autoconfig.' . $config['general']['domain']) {
 ?>
@@ -130,13 +165,14 @@ $schema = (isset($schema[1])) ? $schema[1] : false;
 
 <?php
 // Request from unknown client
-} else {
+}
+}
 ?>
 <?xml version="1.0" encoding="utf-8"?>
 
 <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
     <Response>
-        <Error Time="<?php echo date('H:i:s') ?>" Id="1">
+        <Error Time="<?php echo date('H:i:s.v') ?>" Id="1">
             <ErrorCode>600</ErrorCode>
             <Message>Invalid Request</Message>
             <DebugData />
@@ -145,7 +181,7 @@ $schema = (isset($schema[1])) ? $schema[1] : false;
 </Autodiscover>
 
 <?php
-}
+
 
 
 /***************************** HELPER FUNCTIONS *******************************/
@@ -156,18 +192,28 @@ $schema = (isset($schema[1])) ? $schema[1] : false;
  * @param  string  $message  Message to log
  * @param  string  $level    Log level
  */
-function logger ($message, $level = 'INFO')
+function logger ()
 {
     global $config;
 
-    $level = strtoupper($level);
+    $level = 'INFO';
+    $args = func_get_args();
+    if (in_array(strtoupper($args[func_num_args() - 1]), ['DEBUG', 'INFO', 'WARNING', 'ERROR'])) {
+        $level = strtoupper(array_pop($args));
+    }
 
     if (!$config['general']['debug']  &&  $level == 'DEBUG') {
         return;
     }
 
+    $message = '';
+    foreach ($args as $arg) {
+        $message .= (is_string($arg)) ? $arg : var_export($arg, true);
+        $message .= ' ';
+    }
+
     file_put_contents(
         $config['general']['logfile'],
-        date('c') . "\t[$level]\t" . var_export($message, true) . PHP_EOL,
+        date('c') . "\t[$level]\t" . $message . PHP_EOL,
         FILE_APPEND);
 }
