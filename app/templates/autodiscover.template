@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+    <Response xmlns="%SCHEMA%">
+        <User>
+            <DisplayName>%DISPLAY_NAME%</DisplayName>
+        </User>
+
+        <Account>
+            <AccountType>email</AccountType>
+            <Action>settings</Action>
+            <Protocol>
+                <Type>IMAP</Type>
+                <Server>%IMAP_HOST%</Server>
+                <Port>%IMAP_PORT%</Port>
+                <LoginName>%LOGIN%</LoginName>
+                <SPA>%IMAP_SPA%</SPA>
+                <SSL>%IMAP_SSL%</SSL>
+                <AuthRequired>on</AuthRequired>
+            </Protocol>
+            <Protocol>
+                <Type>SMTP</Type>
+                <Server>%SMTP_HOST%</Server>
+                <Port>%SMTP_PORT%</Port>
+                <LoginName>%LOGIN%</LoginName>
+                <SPA>%SMTP_SPA%</SPA>
+                <SSL>%SMTP_SSL%</SSL>
+                <AuthRequired>on</AuthRequired>
+            </Protocol>
+        </Account>
+    </Response>
+</Autodiscover>

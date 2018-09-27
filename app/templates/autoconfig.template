@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<clientConfig version="1.1">
+    <emailProvider id="%DOMAIN%">
+        <domain>%DOMAIN%</domain>
+        <displayName>%DISPLAY_NAME%</displayName>
+        <incomingServer type="imap">
+            <hostname>%IMAP_HOST%</hostname>
+            <port>%IMAP_PORT%</port>
+            <socketType>%IMAP_SOCKET%</socketType>
+            <authentication>%IMAP_AUTHENTICATION%</authentication>
+            <username>%USERNAME%</username>
+        </incomingServer>
+        <outgoingServer type="smtp">
+            <hostname>%SMTP_HOST%</hostname>
+            <port>%SMTP_PORT%</port>
+            <socketType>%SMTP_SOCKET%</socketType>
+            <authentication>%SMTP_AUTHENTICATION%</authentication>
+            <username>%USERNAME%</username>
+        </outgoingServer>
+    </emailProvider>
+</clientConfig>

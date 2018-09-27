@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4": {
+            "PhpAutodiscover\\": "app/"
+        }
+    },
+    "require": {
+        "psr/log": "^1.0"
+    }
+}
