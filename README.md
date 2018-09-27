@@ -6,10 +6,10 @@ Another way how to autoconfigure mail clients are
  - SRV DNS records according to [RFC6186](https://tools.ietf.org/html/rfc6186)
 
 Tested with:
- - Android E-mail app (Add account > Account type Other > Put your mail address with corresponding domain > Exchange > Put your password)
+ - Android E-mail app
  - Thunderbird
  - Mail (Windows 10 native client)
- - Microsoft Outlook 2016
+ - Microsoft Outlook 2010
  - Evolution (Gnome native client)
 
 ## Prerequisites
@@ -94,12 +94,11 @@ You HAVE TO add account directly in Gnome settings, not it Evolution (it doesn't
 1. After all you find your mailbox in Evolution
 
 ### Android E-mail (v6.41.18)
-NOT SUPPORTED - it sends mobilesync request
+NOT SUPPORTED - it sends [mobilesync] request
 
 1. Go to Settings > Add account > Microsoft Exchange
 1. Application tries open URL `POST https://autodiscover.<domain>/autodiscover/autodiscover.xml` with data:
-    ```
-    <?xml version="1.0" encoding="utf-8"?>
+    ```xml
     <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/mobilesync/requestschema/2006">
       <Request>
         <EMailAddress>%email%</EMailAddress>
