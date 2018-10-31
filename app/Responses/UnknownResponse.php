@@ -2,6 +2,8 @@
 
 namespace PhpAutodiscover\Responses;
 
+use PhpAutodiscover;
+
 class UnknownResponse implements ResponseInterface
 {
     private $logger;
