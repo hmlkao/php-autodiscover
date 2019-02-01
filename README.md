@@ -1,9 +1,9 @@
 # php-autodiscover
 Simple Autdiscover/Autoconfig XML generator written in PHP.
+
 Autodiscover was developed by Microsoft to simply set an email client according to Active Directory.
 
-Another way how to autoconfigure mail clients are
- - SRV DNS records according to [RFC6186](https://tools.ietf.org/html/rfc6186)
+It tried to do it as simple as possible.
 
 Tested with:
  - Android E-mail app
@@ -12,13 +12,15 @@ Tested with:
  - Microsoft Outlook 2010
  - Evolution (Gnome native client)
 
+Alternative way how to autoconfigure mail clients is
+ - SRV DNS records according to [RFC6186](https://tools.ietf.org/html/rfc6186)
+
 ## Prerequisites
 You should have:
  - correctly set mail server ([great instructions] written by Sam Hobbs for Raspberry Pi).
  - correctly configured DNS records for subdomains `autodiscover.<domain>` and `autoconfig.<domain>`
  - valid TLS certificates for your subdomains `autodiscover.<domain>` and `autoconfig.<domain>` (eg. [Let's Encrypt]).
  - [installed composer](https://getcomposer.org), project depends on some other PHP libraries
-git@gitlab.com:hmlkao/cookbook-rpi.git
 
 ### DNS records
 There are differencies how clients calls for autoconfiguration:
@@ -37,8 +39,7 @@ git@gitlab.com:hmlkao/cookbook-rpi.git
 ## Web server configuration examples
 
 ### Nginx
-```
-```
+
 ### Apache
 
 ### Multiple domains on one machine
@@ -115,7 +116,6 @@ You should choose Exchange as a source for email.
 ## TODO
 - Nginx examples
 - Apache examples
-- Usage description
 - Factory to create response
 
 
