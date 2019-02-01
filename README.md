@@ -35,7 +35,7 @@ git clone https://github.com/hmlkao/php-autodiscover.git autodiscover
 cd autodiscover
 composer install
 ```
-git@gitlab.com:hmlkao/cookbook-rpi.git
+
 ## Web server configuration examples
 
 ### Nginx
