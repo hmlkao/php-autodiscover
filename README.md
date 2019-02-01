@@ -18,6 +18,7 @@ You should have:
  - correctly configured DNS records for subdomains `autodiscover.<domain>` and `autoconfig.<domain>`
  - valid TLS certificates for your subdomains `autodiscover.<domain>` and `autoconfig.<domain>` (eg. [Let's Encrypt]).
  - [installed composer](https://getcomposer.org), project depends on some other PHP libraries
+git@gitlab.com:hmlkao/cookbook-rpi.git
 
 ### DNS records
 There are differencies how clients calls for autoconfiguration:
@@ -32,7 +33,7 @@ git clone https://github.com/hmlkao/php-autodiscover.git autodiscover
 cd autodiscover
 composer install
 ```
-
+git@gitlab.com:hmlkao/cookbook-rpi.git
 ## Web server configuration examples
 
 ### Nginx
@@ -51,7 +52,7 @@ NOTE: If is your configuration same for all domains it requires only different W
 The process how is Outlook looking for settings is well described [here](https://technet.microsoft.com/en-us/library/cc511507.aspx?f=255&mspperror=-2147217396#Anchor_2)
 1. Open File > Add account
 1. Enter your mail
-1. This version tries only URL `GET https://autodiscover.<domain>/autodiscover/autodiscover.xml`
+1. Version 2010 tries only URL `GET https://autodiscover.<domain>/autodiscover/autodiscover.xml`
     ```xml
     <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/mobilesync/requestschema/2006">
       <Request>
@@ -62,7 +63,7 @@ The process how is Outlook looking for settings is well described [here](https:/
     ```
 
 ### Microsoft Mail (v16005.10730.20115.0)
-Native application available in Microsoft Windows 10.
+Native application available for Mail, Calendar and Contatcts in Microsoft Windows 10.
 1. Add account > Other (POP, IMAP)
 1. Enter your mail address and password
 
